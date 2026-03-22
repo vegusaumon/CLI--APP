@@ -2,6 +2,8 @@ from datetime import datetime
 import os
 import cbor2
 
+
+# ---------------------- Expense Class ----------------------
 class Expense:
     def __init__(self,date,description,amount):
         try:
@@ -29,6 +31,8 @@ class Expense:
         return Expense(data["date"],data["description"],data["amount"])
 
 
+
+# -------------------------- ExpenseTracker Class ------------------------------
 class ExpenseTracker:
     def __init__(self):
         self.expenses = []
@@ -68,6 +72,7 @@ class ExpenseTracker:
 
 
 
+# ------------------------------- Helper Function ---------------------------
 def get_valid_expense():
     while True:
         date_input = input("Enter date (YYYY-MM-DD): ")
@@ -81,6 +86,7 @@ def get_valid_expense():
             print(f"Error: {e}. Please try again.\n")
 
 
+# --------------------- Main Function ----------------------------
 def main():
     tracker = ExpenseTracker()
     tracker.load_from_file()
@@ -128,20 +134,8 @@ def main():
             print('Invalid option. Please try again. \n')
 
 
+
+# --------------------- Entry Point --------------------
 if __name__ == "__main__":
     main()
 
-
-
-
-
-# Test for negative integers
-
-#exp = Expense("2026-03-21","Lunch",-12)
-
-# Test for invalid format
-#exp2 = Expense("21-03-2026","Dinner",15)
-
-# Valid test 
-#exp3 = Expense("2026-03-21","Lunch",12)
-#print(exp3)
