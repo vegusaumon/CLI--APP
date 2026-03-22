@@ -45,6 +45,11 @@ class ExpenseTracker:
         for exp in self.expenses:
             print(exp)
         print("-------------\n")
+        # Show total at the end
+        print(F"Total Expenses: ${self.total_expenses():.2f}\n")
+
+    def total_expenses(self):
+        return sum(exp.amount for exp in self.expenses)
 
     def save_to_file(self,filename= "expenses.cbor"):
         data = [exp.to_dict() for exp in self.expenses]
@@ -75,52 +80,56 @@ def get_valid_expense():
         except ValueError as e:
             print(f"Error: {e}. Please try again.\n")
 
-tracker = ExpenseTracker()
-tracker.load_from_file()
 
-while True:
-    print("1. Add Expense")
-    print("2. View Expenses")
-    print("3. Delete Expense")
-    print("4. Quit")
-    choice = input("Choose an option: ")
+def main():
+    tracker = ExpenseTracker()
+    tracker.load_from_file()
 
-    if choice == "1":
-        expense = get_valid_expense()
-        tracker.add_expense(expense)
-        tracker.save_to_file()
-        print("expense added successfully!\n")
-    elif choice == "2":
-        tracker.view_expenses()
-    elif choice == "3":
-        if not tracker.expenses:
-            print("no expenses to delete.\n")
-            continue
+    while True:
+        print("1. Add Expense")
+        print("2. View Expenses")
+        print("3. Delete Expense")
+        print("4. Quit")
+        choice = input("Choose an option: ")
 
-        print("---- Expenses -----")
-        for idx,exp in enumerate(tracker.expenses):
-            print(f"{idx}: {exp}")
-        print("--------------------")
+        if choice == "1":
+            expense = get_valid_expense()
+            tracker.add_expense(expense)
+            tracker.save_to_file()
+            print("expense added successfully!\n")
+        elif choice == "2":
+            tracker.view_expenses()
+        elif choice == "3":
+            if not tracker.expenses:
+                print("no expenses to delete.\n")
+                continue
 
-        try:
-            del_index = int(input("Enter the index of the expense to delete: "))
-            if (0<= del_index) and (del_index <len(tracker.expenses)):
-                deleted = tracker.expenses.pop(del_index)
-                tracker.save_to_file()
-                print(f"Deleted expense: {deleted}\n")
-            else:
-                print('Invalid index. Please try again. \n')
-        except ValueError:
-            print("Invalid input. Please enter a number. \n")
+            print("---- Expenses -----")
+            for idx,exp in enumerate(tracker.expenses):
+                print(f"{idx}: {exp}")
+            print("--------------------")
 
-
-    elif choice == "4":
-        print("Thank you for using our app")
-        break
-    else:
-        print('Invalid option. Please try again. \n')
+            try:
+                del_index = int(input("Enter the index of the expense to delete: "))
+                if (0<= del_index) and (del_index <len(tracker.expenses)):
+                    deleted = tracker.expenses.pop(del_index)
+                    tracker.save_to_file()
+                    print(f"Deleted expense: {deleted}\n")
+                else:
+                    print('Invalid index. Please try again. \n')
+            except ValueError:
+                print("Invalid input. Please enter a number. \n")
 
 
+        elif choice == "4":
+            print("Thank you for using our app")
+            break
+        else:
+            print('Invalid option. Please try again. \n')
+
+
+if __name__ == "__main__":
+    main()
 
 
 
